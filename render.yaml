@@ -1,3 +1,5 @@
+# One-click deployment of InternConnect on Render.
+# The React build is served by Express so the API and site share one URL.
 services:
   - type: web
     name: internconnect-demo
@@ -5,11 +7,17 @@ services:
     plan: free
     buildCommand: npm --prefix frontend ci && npm --prefix frontend run build && npm --prefix backend ci
     startCommand: >-
-      sh -c 'if [ ! -f backend/data/internconnect.sqlite ]; then node backend/src/seeders/seed.js; fi; node backend/src/server.js'
+      sh -c 'mkdir -p backend/data &&
+      if [ ! -f backend/data/internconnect.sqlite ]; then
+        node backend/src/seeders/seed.js || exit 1;
+      fi;
+      exec node backend/src/server.js'
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: 22.16.0
+      - key: NODE_ENV
+        value: production
       - key: VITE_API_URL
         value: /api
       - key: DB_DIALECT
