@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+*.sqlite
+.DS_Store
+
+# Never commit credentials or runtime data
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.db
+node_modules/
+dist/
+coverage/
