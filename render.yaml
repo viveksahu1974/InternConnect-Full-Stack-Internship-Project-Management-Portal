@@ -5,7 +5,7 @@ services:
     name: internconnect-demo
     runtime: node
     plan: free
-    buildCommand: npm --prefix frontend ci && npm --prefix frontend run build && npm --prefix backend ci
+    buildCommand: npm --prefix frontend ci --include=dev && npm --prefix frontend run build && npm --prefix backend ci
     startCommand: >-
       sh -c 'mkdir -p backend/data &&
       if [ ! -f backend/data/internconnect.sqlite ]; then
