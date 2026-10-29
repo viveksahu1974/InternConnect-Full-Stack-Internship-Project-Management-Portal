@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: internconnect-demo
+    runtime: node
+    plan: free
+    buildCommand: npm --prefix frontend ci && npm --prefix frontend run build && npm --prefix backend ci
+    startCommand: >-
+      sh -c 'if [ ! -f backend/data/internconnect.sqlite ]; then node backend/src/seeders/seed.js; fi; node backend/src/server.js'
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.16.0
+      - key: VITE_API_URL
+        value: /api
+      - key: DB_DIALECT
+        value: sqlite
+      - key: DB_STORAGE
+        value: ./data/internconnect.sqlite
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
